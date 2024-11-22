@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - DB_TYPE=postgres
+      - DB_HOST=db:5432
+      - DB_NAME=${POSTGRES_DB}
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - APP_NAME=My Gitea
+      - RUN_MODE=prod
+    ports:
+      - "3000:3000" # Web UI
+      - "2222:22"   # SSH
+    volumes:
+      - gitea-data:/data
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  db:
+    image: postgres:13
+    container_name: gitea-db
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea_password
+      - POSTGRES_DB=gitea
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gitea"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  gitea-data:
+  postgres-data:

@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "remote_mirror_BSDaPLPYiJ"]
+	url = https://github.com/newcl/bit.git
+	mirror = true
+	push = +refs/heads/*:refs/heads/*
+	push = +refs/tags/*:refs/tags/*

@@ -1,50 +1,42 @@
 #!/bin/bash
 
-# Update and upgrade the system
-echo "Updating system..."
-sudo apt update && sudo apt upgrade -y
+echo "Installing Docker and Docker Compose on Ubuntu..."
 
-# Install required dependencies
-echo "Installing required dependencies..."
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+# Update system and install prerequisites
+sudo apt-get update && sudo apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
 
 # Add Docker's official GPG key
-echo "Adding Docker's GPG key..."
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "Adding Docker's official GPG key..."
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-# Add Docker's repository
-echo "Adding Docker repository..."
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# Add Docker's official repository
+echo "Adding Docker's official repository..."
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# Update the package database
-echo "Updating package database..."
-sudo apt update
+# Update package index
+sudo apt-get update
 
-# Install Docker
-echo "Installing Docker..."
-sudo apt install -y docker-ce docker-ce-cli containerd.io
+# Install Docker Engine, CLI, and containerd
+echo "Installing Docker Engine and CLI..."
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Enable and start Docker
-echo "Enabling and starting Docker service..."
+# Start and enable Docker service
+echo "Starting and enabling Docker service..."
 sudo systemctl start docker
 sudo systemctl enable docker
 
-# Optional: Allow non-root users to run Docker
-echo "Allowing non-root user to run Docker..."
-sudo usermod -aG docker $USER
-
-# Install Docker Compose
-echo "Installing Docker Compose..."
-sudo apt install -y docker-compose
-
 # Verify Docker installation
-echo "Verifying Docker installation..."
 docker --version
-docker-compose --version
 
-# Test Docker with a hello-world container
-echo "Testing Docker installation with 'hello-world' container..."
-docker run hello-world
+# Verify Docker Compose installation
+docker compose version
 
-echo "Docker installation completed! Please log out and log back in to use Docker without sudo."
+echo "Docker and Docker Compose have been installed successfully."
 

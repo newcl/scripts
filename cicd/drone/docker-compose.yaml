@@ -10,8 +10,8 @@ services:
     restart: always
     environment:
       - DRONE_GITEA_SERVER=http://192.168.145.131:3000
-      - DRONE_GITEA_CLIENT_ID=ef68c152-b9c4-41bc-9ba7-071381aad0ab
-      - DRONE_GITEA_CLIENT_SECRET=gto_zuyh6unm3pgqqejd4qazw6rrboyqcimwv6vtjdedfdcvei3efrgq
+      - DRONE_GITEA_CLIENT_ID=b3bb119a-4c67-40c9-9c6c-3838ddb93f2e
+      - DRONE_GITEA_CLIENT_SECRET=gto_yaemwzc3einomp6x3g4gawxps5mgqeibf2jp3a37rnwnesbpl3zq
       - DRONE_RPC_SECRET=98e1779aa9b2b69a70683dde4593751166ce6f5868c4ded3cc5186c4166a0d33
       - DRONE_SERVER_HOST=http://192.168.145.131:8080
       - DRONE_SERVER_PROTO=http
